@@ -30,10 +30,10 @@ public class UIManager : MonoBehaviour
             {
                 sequenceStarted = true;
                 var newSequence = DOTween.Sequence();
-                newSequence.Append(catTransform.DOMoveX(200f, 0.1f).SetRelative(true));
+                newSequence.Append(catTransform.DOMoveX(425f, 0.1f).SetRelative(true));
                 newSequence.Append(catTransform.DORotate(catTransform.rotation.eulerAngles + new Vector3(0, 0, -10), 0.1f).SetLoops(10, LoopType.Yoyo));
                 newSequence.Append(shakeTransform.DOShakeScale(1.0f));
-                newSequence.Append(catTransform.DOMoveX(-200f, 0.1f).SetRelative(true));
+                newSequence.Append(catTransform.DOMoveX(-425f, 0.1f).SetRelative(true));
                 newSequence.OnComplete(() => sequenceStarted = false);
             }
         }        
