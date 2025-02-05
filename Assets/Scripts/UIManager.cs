@@ -11,32 +11,32 @@ public class UIManager : MonoBehaviour
     int addedScore;
     public TextMeshProUGUI scoreOutputText;
     public RectTransform shakeTransform, catTransform;
+    bool sequenceStarted = false;
 
     private void Start()
     {
         score = 0;
+        ResetScore();
     }
 
     public void UpdateScore(int value)
     {
-        addedScore += value;
+        addedScore = value;
         score += addedScore;
-        if (addedScore > 0)
+        scoreOutputText.text = score.ToString();
+        if (addedScore > 0 && shakeTransform != null)
         {
-            if (shakeTransform != null)
+            if (!sequenceStarted)
             {
+                sequenceStarted = true;
                 var newSequence = DOTween.Sequence();
-                newSequence.Append(catTransform.DOMoveX(200f, 0.4f).SetRelative(true));
-                newSequence.AppendInterval(0.5f);
+                newSequence.Append(catTransform.DOMoveX(200f, 0.1f).SetRelative(true));
+                newSequence.Append(catTransform.DORotate(catTransform.rotation.eulerAngles + new Vector3(0, 0, -10), 0.1f).SetLoops(10, LoopType.Yoyo));
                 newSequence.Append(shakeTransform.DOShakeScale(1.0f));
+                newSequence.Append(catTransform.DOMoveX(-200f, 0.1f).SetRelative(true));
+                newSequence.OnComplete(() => sequenceStarted = false);
             }
-        }
-        else
-        {
-            var newSequence = DOTween.Sequence();
-            newSequence.Append(catTransform.DOMoveX(-200f, 0.4f).SetRelative(true));
-        }
-        
+        }        
     }
 
     public void ResetScore()
